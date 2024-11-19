@@ -17,6 +17,10 @@
 ## Added comments for better understanding of the pipeline and possible
 ## errors and exceptions handling
 
+# During data pulling, various warning are showed for lines that have improper
+# quoting, rows that have fewer fields than expected and some formatting issues.
+
+options(warn = -1) # run this line to suppress warnings
 
 # ---------------------------------------------------------------------------- #
 
