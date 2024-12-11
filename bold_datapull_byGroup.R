@@ -112,6 +112,8 @@ makefasta_function <- function(thedataframe, kingdomname) {
 #### ----- 1) get all the animals that aren't Chordates or Arthropods ----- ####
 ################################################################################
 
+#### Added: Loricifera, Micrognathozoa, Orthonectida
+
 otherAnmlNames <- c(
   "Acanthocephala", "Acoelomorpha", "Annelida", "Brachiopoda", "Bryozoa",
   "Chaetognatha", "Cnidaria", "Ctenophora", "Cycliophora", "Echinodermata",
@@ -122,10 +124,8 @@ otherAnmlNames <- c(
   "Rotifera", "Sipuncula", "Tardigrada", "Xenacoelomorpha"
   )
 
-# Added:
-# Loricifera, Micrognathozoa, Orthonectida
-
-# run: ??bold_seqspec # for explanation on the object
+# for explanation on the object run:
+# ??bold_seqspec 
 
 # Pull data
 altAnml_list <- lapply(otherAnmlNames, bold_seqspec)
@@ -172,13 +172,12 @@ rm(fungiNames, fungi_list, fungi_df, fungi_fasta, fungi_meta)
 #### ------------------ 3) get all the protist records -------------------- ####
 ################################################################################
 
+#### Added: Rhodophyta
+
 protistNames <- c(
   'Chlorarachniophyta', 'Ciliophora', 'Heterokontophyta',
   'Pyrrophycophyta', 'Rhodophyta'
   )
-
-# Added:
-# Rhodophyta
 
 # Pull data
 protist_list <- lapply(protistNames, bold_seqspec)
@@ -339,49 +338,158 @@ rm(Col_df, Col_fasta, Col_meta)
 
 diptera_list <- downstream("Diptera", db = "bold", downto = "family")
 
-# Pull data: Sciaridae
+############### Pull data: Sciaridae
 Dip_Sciaridae_names <- diptera_list$Diptera %>% filter(name=="Sciaridae") %>% select(name)
 Dip_Sciaridae_list <- lapply(Dip_Sciaridae_names, bold_seqspec)
 Dip_Sciaridae_df <- gatherBOLDdat_function(Dip_Sciaridae_list)
 
-# Pull data: Cecidomyiidae
+rm(Dip_Sciaridae_names, Dip_Sciaridae_list)
+
+# Sequences
+Dip_fasta <- makefasta_function(Dip_Sciaridae_df, "Animalia")
+write.csv(Dip_fasta, file = "boldCustom.only_Sciaridae_Diptera.seqNtaxa.csv", quote = FALSE, row.names = FALSE)
+cat("\n", "Written boldCustom.only_Sciaridae_Diptera.seqNtaxa.csv", "\n")
+
+# Metadata
+Dip_meta <- gatherBOLDmetadat_function(Dip_Sciaridae_df)
+write.csv(Dip_meta, file = "boldCustom.only_Sciaridae_Diptera.meta.csv", quote = FALSE, row.names = FALSE)
+cat("\n", "Written boldCustom.only_Sciaridae_Diptera.meta.csv", "\n")
+
+rm(Dip_Sciaridae_df, Dip_fasta, Dip_meta)
+
+############### Pull data: Cecidomyiidae
 Dip_Cecidomyiidae_names <- diptera_list$Diptera %>% filter(name=="Cecidomyiidae") %>% select(name)
 Dip_Cecidomyiidae_list <- lapply(Dip_Cecidomyiidae_names, bold_seqspec)
 Dip_Cecidomyiidae_df <- gatherBOLDdat_function(Dip_Cecidomyiidae_list)
 
-# Pull data: Chironomidae
+rm(Dip_Cecidomyiidae_names, Dip_Cecidomyiidae_list)
+
+# Sequences
+Dip_fasta <- makefasta_function(Dip_Cecidomyiidae_df, "Animalia")
+write.csv(Dip_fasta, file = "boldCustom.only_Cecidomyiidae_Diptera.seqNtaxa.csv", quote = FALSE, row.names = FALSE)
+cat("\n", "Written boldCustom.only_Cecidomyiidae_Diptera.seqNtaxa.csv", "\n")
+
+# Metadata
+Dip_meta <- gatherBOLDmetadat_function(Dip_Cecidomyiidae_df)
+write.csv(Dip_meta, file = "boldCustom.only_Cecidomyiidae_Diptera.meta.csv", quote = FALSE, row.names = FALSE)
+cat("\n", "Written boldCustom.only_Cecidomyiidae_Diptera.meta.csv", "\n")
+
+rm(Dip_Cecidomyiidae_df, Dip_fasta, Dip_meta)
+
+############### Pull data: Chironomidae
 Dip_Chironomidae_names <- diptera_list$Diptera %>% filter(name=="Chironomidae") %>% select(name)
 Dip_Chironomidae_list <- lapply(Dip_Chironomidae_names, bold_seqspec)
 Dip_Chironomidae_df <- gatherBOLDdat_function(Dip_Chironomidae_list)
 
-rm(Dip_Sciaridae_list, Dip_Cecidomyiidae_list, Dip_Chironomidae_list)
-rm(Dip_Sciaridae_names, Dip_Cecidomyiidae_names, Dip_Chironomidae_list)
+rm(Dip_Chironomidae_names, Dip_Chironomidae_list)
 
-# Pull data: remaining others
-excludeDipNames <- c("Sciaridae","Cecidomyiidae","Chironomidae")
+# Sequences
+Dip_fasta <- makefasta_function(Dip_Chironomidae_df, "Animalia")
+write.csv(Dip_fasta, file = "boldCustom.only_Chironomidae_Diptera.seqNtaxa.csv", quote = FALSE, row.names = FALSE)
+cat("\n", "Written boldCustom.only_Chironomidae_Diptera.seqNtaxa.csv", "\n")
+
+# Metadata
+Dip_meta <- gatherBOLDmetadat_function(Dip_Chironomidae_df)
+write.csv(Dip_meta, file = "boldCustom.only_Chironomidae_Diptera.meta.csv", quote = FALSE, row.names = FALSE)
+cat("\n", "Written boldCustom.only_Chironomidae_Diptera.meta.csv", "\n")
+
+rm(Dip_Chironomidae_df, Dip_fasta, Dip_meta)
+
+############### Pull data: Ceratopogonidae
+Dip_Ceratopogonidae_names <- diptera_list$Diptera %>% filter(name=="Ceratopogonidae") %>% select(name)
+Dip_Ceratopogonidae_list <- lapply(Dip_Ceratopogonidae_names, bold_seqspec)
+Dip_Ceratopogonidae_df <- gatherBOLDdat_function(Dip_Ceratopogonidae_list)
+
+rm(Dip_Ceratopogonidae_names, Dip_Ceratopogonidae_list)
+
+# Sequences
+Dip_fasta <- makefasta_function(Dip_Ceratopogonidae_df, "Animalia")
+write.csv(Dip_fasta, file = "boldCustom.only_Ceratopogonidae_Diptera.seqNtaxa.csv", quote = FALSE, row.names = FALSE)
+cat("\n", "Written boldCustom.only_Ceratopogonidae_Diptera.seqNtaxa.csv", "\n")
+
+# Metadata
+Dip_meta <- gatherBOLDmetadat_function(Dip_Ceratopogonidae_df)
+write.csv(Dip_meta, file = "boldCustom.only_Ceratopogonidae_Diptera.meta.csv", quote = FALSE, row.names = FALSE)
+cat("\n", "Written boldCustom.only_Ceratopogonidae_Diptera.meta.csv", "\n")
+
+rm(Dip_Ceratopogonidae_df, Dip_fasta, Dip_meta)
+
+############### Pull data: Dolichopodidae 
+Dip_Dolichopodidae_names <- diptera_list$Diptera %>% filter(name=="Dolichopodidae") %>% select(name)
+Dip_Dolichopodidae_list <- lapply(Dip_Dolichopodidae_names, bold_seqspec)
+Dip_Dolichopodidae_df <- gatherBOLDdat_function(Dip_Dolichopodidae_list)
+
+rm(Dip_Dolichopodidae_names, Dip_Dolichopodidae_list)
+
+# Sequences
+Dip_fasta <- makefasta_function(Dip_Dolichopodidae_df, "Animalia")
+write.csv(Dip_fasta, file = "boldCustom.only_Dolichopodidae_Diptera.seqNtaxa.csv", quote = FALSE, row.names = FALSE)
+cat("\n", "Written boldCustom.only_Dolichopodidae_Diptera.seqNtaxa.csv", "\n")
+
+# Metadata
+Dip_meta <- gatherBOLDmetadat_function(Dip_Dolichopodidae_df)
+write.csv(Dip_meta, file = "boldCustom.only_Dolichopodidae_Diptera.meta.csv", quote = FALSE, row.names = FALSE)
+cat("\n", "Written boldCustom.only_Dolichopodidae_Diptera.meta.csv", "\n")
+
+rm(Dip_Dolichopodidae_df, Dip_fasta, Dip_meta)
+
+############### Pull data: Phoridae 
+Dip_Phoridae_names <- diptera_list$Diptera %>% filter(name=="Phoridae") %>% select(name)
+Dip_Phoridae_list <- lapply(Dip_Phoridae_names, bold_seqspec)
+Dip_Phoridae_df <- gatherBOLDdat_function(Dip_Phoridae_list)
+
+rm(Dip_Phoridae_names, Dip_Phoridae_list)
+
+# Sequences
+Dip_fasta <- makefasta_function(Dip_Phoridae_df, "Animalia")
+write.csv(Dip_fasta, file = "boldCustom.only_Phoridae_Diptera.seqNtaxa.csv", quote = FALSE, row.names = FALSE)
+cat("\n", "Written boldCustom.only_Phoridae_Diptera.seqNtaxa.csv", "\n")
+
+# Metadata
+Dip_meta <- gatherBOLDmetadat_function(Dip_Phoridae_df)
+write.csv(Dip_meta, file = "boldCustom.only_Phoridae_Diptera.meta.csv", quote = FALSE, row.names = FALSE)
+cat("\n", "Written boldCustom.only_Phoridae_Diptera.meta.csv", "\n")
+
+rm(Dip_Phoridae_df, Dip_fasta, Dip_meta)
+
+############### Pull data: Psychodidae 
+Dip_Psychodidae_names <- diptera_list$Diptera %>% filter(name=="Psychodidae") %>% select(name)
+Dip_Psychodidae_list <- lapply(Dip_Psychodidae_names, bold_seqspec)
+Dip_Psychodidae_df <- gatherBOLDdat_function(Dip_Psychodidae_list)
+
+rm(Dip_Psychodidae_names, Dip_Psychodidae_list)
+
+# Sequences
+Dip_fasta <- makefasta_function(Dip_Psychodidae_df, "Animalia")
+write.csv(Dip_fasta, file = "boldCustom.only_Psychodidae_Diptera.seqNtaxa.csv", quote = FALSE, row.names = FALSE)
+cat("\n", "Written boldCustom.only_Psychodidae_Diptera.seqNtaxa.csv", "\n")
+
+# Metadata
+Dip_meta <- gatherBOLDmetadat_function(Dip_Psychodidae_df)
+write.csv(Dip_meta, file = "boldCustom.only_Psychodidae_Diptera.meta.csv", quote = FALSE, row.names = FALSE)
+cat("\n", "Written boldCustom.only_Psychodidae_Diptera.meta.csv", "\n")
+
+rm(Dip_Psychodidae_df, Dip_fasta, Dip_meta)
+
+############### Pull data: remaining others
+excludeDipNames <- c("Sciaridae","Cecidomyiidae","Chironomidae","Ceratopogonidae","Dolichopodidae","Phoridae","Psychodidae")
 diptera_allother_names <- diptera_list$Diptera %>% filter(!name %in% excludeDipNames) %>% select(name)
 Dip_allothers_list <- lapply(diptera_allother_names, bold_seqspec)
 Dip_allothers_df <- gatherBOLDdat_function(Dip_allothers_list)
 
-rm(Dip_Sciaridae_list, Dip_Cecidomyiidae_list, Dip_Chironomidae_list, Dip_allothers_list)
-rm(Dip_Cecidomyiidae_names, Dip_Chironomidae_names, Dip_Sciaridae_names, diptera_allother_names)
-
-# Join all Dipteran data
-Dip_df <- rbind(Dip_Sciaridae_df, Dip_Cecidomyiidae_df, Dip_Chironomidae_df, Dip_allothers_df)
-
-rm(Dip_Sciaridae_df, Dip_Cecidomyiidae_df, Dip_Chironomidae_df, Dip_allothers_df)
+rm(Dip_allothers_list, diptera_allother_names)
 
 # Sequences
-Dip_fasta <- makefasta_function(Dip_df, "Animalia")
-write.csv(Dip_fasta, file = "boldCustom.onlyDiptera.seqNtaxa.csv", quote = FALSE, row.names = FALSE)
-cat("\n", "Written boldCustom.onlyDiptera.seqNtaxa.csv", "\n")
+Dip_fasta <- makefasta_function(Dip_allothers_df, "Animalia")
+write.csv(Dip_fasta, file = "boldCustom.only_allothers_Diptera.seqNtaxa.csv", quote = FALSE, row.names = FALSE)
+cat("\n", "Written boldCustom.only_allothers_Diptera.seqNtaxa.csv", "\n")
 
 # Metadata
-Dip_meta <- gatherBOLDmetadat_function(Dip_df)
-write.csv(Dip_meta, file = "boldCustom.onlyDiptera.meta.csv", quote = FALSE, row.names = FALSE)
-cat("\n", "Written boldCustom.onlyDiptera.meta.csv", "\n")
+Dip_meta <- gatherBOLDmetadat_function(Dip_allothers_df)
+write.csv(Dip_meta, file = "boldCustom.only_allothers_Diptera.meta.csv", quote = FALSE, row.names = FALSE)
+cat("\n", "Written boldCustom.only_allothers_Diptera.meta.csv", "\n")
 
-rm(Dip_df, Dip_fasta, Dip_meta)
+rm(Dip_allothers_df, Dip_fasta, Dip_meta)
 
 ################################################################################
 #### ---------------- 9) get just Hymenopteran records -------------------- ####
