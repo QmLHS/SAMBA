@@ -1,4 +1,20 @@
 Here, you will find the files included in the tutorial uploaded to the QIIME forum. These resources are provided to support and guide you through the tutorial steps.
 
-* come eseguire i file
-* file con conda env e come scaricarlo - installarlo - attivarlo 
+First, install the environment using conda and this file [file].
+Then, activate the environment with:
+
+```bash
+conda activate q2-amplicon
+```
+
+To run the file, type:
+* 'bash' for .sh files;
+* 'python' for .py files;
+* 'Rscript' for .R files.
+
+**Examples**
+```bash
+Rscript bold_datapull_byGroup.R
+bash check_duplicate_equal_taxon.sh
+python plot_trimmed_and_untrimmed.py
+```
