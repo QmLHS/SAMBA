@@ -18,3 +18,6 @@ Rscript bold_datapull_byGroup.R
 bash check_duplicate_equal_taxon.sh
 python plot_trimmed_and_untrimmed.py
 ```
+
+**Method to avoid mistakes**
+To avoid mistakes, simply place these files in the same folder as the project, so that no additional changes to paths that have not been hardcoded are required.
