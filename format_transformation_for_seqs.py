@@ -19,7 +19,6 @@ def convert_sequence_format(input_text):
         
         output.append(f">{seq_id}")
         output.append(sequence)
-        output.append('')
     
     return '\n'.join(output)
 
