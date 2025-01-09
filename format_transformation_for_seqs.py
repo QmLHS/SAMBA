@@ -29,3 +29,23 @@ def convert_sequence_format(input_text):
         output.extend(sequence_blocks)
         output.append('')
     return '\n'.join(output)
+
+def main():
+    output_file = "ncbi_sequences_in.fasta"
+    
+    try:
+        with open('ncbi_sequences.txt', 'r') as f:
+            input_text = f.read()
+        
+        converted_text = convert_sequence_format(input_text)
+        
+        with open(output_file, 'w') as f:
+            f.write(converted_text)
+        print(f"Conversion successful. Output written to {output_file}")
+    except FileNotFoundError:
+        print(f"Error: Could not find input file ncbi_sequences.txt")
+    except Exception as e:
+        print(f"Error occurred: {str(e)}")
+
+if __name__ == "__main__":
+    main()
