@@ -6,20 +6,28 @@ esearch -db nucleotide -email christian.persico@unimib.it \
 
 
 # Function to process IDs in batches
+# Function to process IDs in batches
 process_batch() {
     local start=$1
     local batch_size=$2
     local total=$3
-    
+     
     # Process a batch of UIDs
     sed -n "${start},$(($start + $batch_size - 1))p" accession_list.txt | \
     efetch -db nucleotide -format gbc | \
     xtract -pattern INSDSeq -sep '\n' -tab '\t' \
         -element INSDSeq_primary-accession \
         -element INSDSeq_sequence \
-        -block "INSDSeq_feature-table"    -subset INSDFeature    -if INSDFeature_key    -equals "source" \
-            -subset INSDFeature_quals    -subset INSDQualifier    -if INSDQualifier_name    -equals "db_xref" \
-            -element INSDQualifier_value >> ncbi_sequences.txt
+        -block "INSDSeq_feature-table" \
+        -subset INSDFeature \
+        -if INSDFeature_key \
+        -equals "source" \
+        -subset INSDFeature_quals \
+        -subset INSDQualifier \
+        -if INSDQualifier_name \
+        -equals "db_xref" \
+        -element INSDQualifier_value >> ncbi_sequences.txt
+     
     echo "Processed entries ${start} to $(($start + batch_size - 1)) of ${total}"
 }
 
