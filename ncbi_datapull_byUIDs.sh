@@ -13,7 +13,7 @@ process_batch() {
     
     # Process a batch of UIDs
     sed -n "${start},$(($start + $batch_size - 1))p" accession_list.txt | \
-    efetch -db nucleotide -format gbc | \  
+    efetch -db nucleotide -format gbc | \
     xtract -pattern INSDSeq -sep '\n' -tab '\t' \
         -element INSDSeq_primary-accession \
         -element INSDSeq_sequence \
