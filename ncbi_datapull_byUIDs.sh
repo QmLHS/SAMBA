@@ -4,8 +4,6 @@ esearch -db nucleotide -email christian.persico@unimib.it \
   -query '(COI-5P [ALL] OR COI [ALL] OR CO1 [ALL] OR COX1 [ALL] OR Cytochrome Oxidase I [ALL] OR Cytochrome c Oxidase Subunit 1 [ALL] OR COX-1 [ALL] OR Cytochrome Oxidase Subunit I [ALL] OR COI gene [ALL] OR COI region [ALL] OR mtDNA COI [ALL] OR Mitochondrial COI [ALL] OR Mitochondrial Cytochrome Oxidase I [ALL] OR COI barcode [ALL] OR DNA barcoding region [ALL] OR COI fragment [ALL] OR COI-5P region [ALL])' | \
   efetch -format uid > accession_list.txt
 
-
-# Function to process IDs in batches
 # Function to process IDs in batches
 process_batch() {
     local start=$1
