@@ -1,7 +1,8 @@
+import sys 
 import pandas as pd
 import matplotlib.pyplot as plt
 
-df = pd.read_csv('anml_seq_lengths.freq.table', sep='\s+', header=None, names=['N', 'bp'])
+df = pd.read_csv(sys.argv[1], sep='\s+', header=None, names=['N', 'bp'])
 
 plt.figure(figsize=(10, 6))
 plt.bar(df['bp'], df['N'], color='blue', label='Final sequences')
