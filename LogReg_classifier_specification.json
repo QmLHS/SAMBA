@@ -1,0 +1,47 @@
+[
+  [
+    "feat_ext",
+    {
+      "alternate_sign": false,
+      "analyzer": "char_wb",
+      "binary": false,
+      "decode_error": "strict",
+      "encoding": "utf-8",
+      "input": "content",
+      "lowercase": true,
+      "n_features": 65536,
+      "ngram_range": [
+        8,
+        8
+      ],
+      "norm": "l2",
+      "preprocessor": null,
+      "stop_words": null,
+      "strip_accents": null,
+      "token_pattern": "(?u)\\b\\w\\w+\\b",
+      "tokenizer": null,
+      "__type__": "feature_extraction.text.HashingVectorizer"
+    }
+  ],
+  [
+    "classify",
+    {
+      "C": 1.0,
+      "class_weight": null,
+      "dual": false,
+      "fit_intercept": true,
+      "intercept_scaling": 1,
+      "l1_ratio": null,
+      "max_iter": 1000,
+      "multi_class": "auto",
+      "n_jobs": null,
+      "penalty": "l2",
+      "random_state": null,
+      "solver": "lbfgs",
+      "tol": 0.0001,
+      "verbose": 0,
+      "warm_start": false,
+      "__type__": "linear_model._logistic.LogisticRegression"
+    }
+  ]
+]
