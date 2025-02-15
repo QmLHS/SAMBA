@@ -1,0 +1,38 @@
+
+[
+  [
+        "feat_ext",
+        {
+                "alternate_sign": false,
+                "analyzer": "char_wb",
+                "binary": false,
+                "decode_error": "strict",
+                "encoding": "utf-8",
+                "input": "content",
+                "lowercase": true,
+                "n_features": 65536,
+                "ngram_range": [8, 8],
+                "norm": "l2",
+                "preprocessor": null,
+                "stop_words": null,
+                "strip_accents": null,
+                "token_pattern": "(?u)\\b\\w\\w+\\b",
+                "tokenizer": null,
+                "__type__": "feature_extraction.text.HashingVectorizer"
+        }
+  ],
+  [
+        "classify",
+        {
+                "loss": "log_loss",
+                "max_iter": 1000,
+                "n_jobs": 1,
+                "alpha": 0.0001,
+                "random_state": 42,
+                "learning_rate": "optimal",
+                "early_stopping": true,
+                "validation_fraction": 0.25,
+                "__type__": "linear_model._stochastic_gradient.SGDClassifier"
+        }
+  ]
+]
