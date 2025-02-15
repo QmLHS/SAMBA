@@ -18,13 +18,44 @@ def read_fasta(fasta_file):
   if current_id is not None:
     sequences[current_id] = ''.join(current_sequence)
   return sequences
+  
+ 
+def standardize_taxonomy(taxonomy_string):
+  standard_ranks = ['k__', 'p__', 'c__', 'o__', 'f__', 'g__', 's__']
+  required_length = len(standard_ranks)
+    
+  # Extract the actual taxonomy part
+  taxonomy_part = taxonomy_string.replace('tax=', '')
+  ranks = taxonomy_part.split(';')
+  ranks = [r.strip() for r in ranks]
+
+  standardized_ranks = []
+    
+  # Process existing ranks
+  for i in range(required_length):
+    prefix = standard_ranks[i]
+    if i < len(ranks) and ranks[i]:
+      rank = ranks[i]
+      # Add prefix if it's missing
+      if not rank.startswith(prefix):
+        rank = prefix + rank
+      standardized_ranks.append(rank)
+    else:
+      # Always append empty rank with prefix
+      standardized_ranks.append(prefix)
+    
+  # Ensure we have exactly 7 ranks
+  assert len(standardized_ranks) == required_length, f"Expected {required_length} ranks, got {len(standardized_ranks)}"
+  # Add back the 'tax=' prefix and join with semicolons
+  return 'tax=' + ';'.join(standardized_ranks)
 
 
 def read_taxonomy(tsv_file):
   df = pd.read_csv(tsv_file, sep='\t')
   df.columns = ['Feature ID', 'Taxon']
   df['Feature ID'] = df['Feature ID'].astype(str)
-  df['Taxon'] = df['Taxon'].str.replace('tax=', '')
+  # Only standardize if the taxonomy doesn't already start with 'tax='
+  df['Taxon'] = df['Taxon'].apply(standardize_taxonomy)
   return df
 
 
