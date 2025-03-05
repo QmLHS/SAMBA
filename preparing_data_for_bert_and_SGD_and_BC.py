@@ -1,4 +1,5 @@
 import pandas as pd
+import numpy as np
 import sys
 from pathlib import Path
 
@@ -45,6 +46,11 @@ def read_fasta(fasta_file):
 my_fasta = sys.argv[1]
 seqs = read_fasta(my_fasta)
 
+indices = seqs[seqs['Sequence'].apply(len) > 200].index
+feature_ID_to_remove = seqs.loc[indices, 'Feature ID'].tolist()
+
+seqs = seqs[~seqs['Feature ID'].isin(feature_ID_to_remove)]
+
 
 # Then, we want to read and standardize the taxonomy information so that ML 
 # doesn't output "non-consistency" errors
@@ -83,6 +89,8 @@ def read_taxonomy(tsv_file):
 
 my_taxa = sys.argv[2]
 taxa = read_taxonomy(my_taxa)
+
+taxa = taxa[~taxa['Feature ID'].isin(feature_ID_to_remove)]
 
 
 ## Creation of the DataFrame objects + Output in files compatible with QIIME2
@@ -175,16 +183,54 @@ del combined_df_filtd_train_val_filtd, combined_df_filtd_train_filtd, combined_d
 # and a map file so that we can later bring the predictions to their
 # original format
 
-unique_taxa = combined_df_filtd['Taxon'].unique()
-taxa_to_label = {taxon: i for i, taxon in enumerate(sorted(unique_taxa))}
+# unique_taxa = combined_df_filtd['Taxon'].unique()
+
+L1 = combined_df_filtd_train_filtd_filtd['Taxon'].tolist()
+unique_labels = list(set(L1))
+
+taxa_to_label = {taxon: i for i, taxon in enumerate(sorted(unique_labels))}
+
+# Now the number of labels should be exactly like the max number of the label
+# corresponding to the biggest int
 
 combined_df_filtd_train_filtd_filtd['label'] = combined_df_filtd_train_filtd_filtd['Taxon'].map(taxa_to_label)
 combined_df_filtd_val_filtd_filtd['label'] = combined_df_filtd_val_filtd_filtd['Taxon'].map(taxa_to_label)
 combined_df_filtd_test_filtd['label'] = combined_df_filtd_test_filtd['Taxon'].map(taxa_to_label)
 
+combined_df_filtd_train_filtd_filtd = combined_df_filtd_train_filtd_filtd.dropna(subset=['label'])
+combined_df_filtd_val_filtd_filtd = combined_df_filtd_val_filtd_filtd.dropna(subset=['label'])
+combined_df_filtd_test_filtd = combined_df_filtd_test_filtd.dropna(subset=['label'])
+
+combined_df_filtd_train_filtd_filtd['label'] = combined_df_filtd_train_filtd_filtd['label'].astype(int)
+combined_df_filtd_val_filtd_filtd['label'] = combined_df_filtd_val_filtd_filtd['label'].astype(int)
+combined_df_filtd_test_filtd['label'] = combined_df_filtd_test_filtd['label'].astype(int)
+
 combined_df_filtd_train_filtd_filtd = combined_df_filtd_train_filtd_filtd.drop('Taxon', axis=1)
 combined_df_filtd_val_filtd_filtd = combined_df_filtd_val_filtd_filtd.drop('Taxon', axis=1)
 combined_df_filtd_test_filtd = combined_df_filtd_test_filtd.drop('Taxon', axis=1)
+
+# ADDITIONAL CHECKPOINTS
+assert combined_df_filtd_train_filtd_filtd['label'].notna().all(), "NaN labels in training set!"
+assert combined_df_filtd_val_filtd_filtd['label'].notna().all(), "NaN labels in validation set!"
+assert combined_df_filtd_test_filtd['label'].notna().all(), "NaN labels in test set!"
+
+def validate_labels(df):
+  unique_labels = df['label'].unique()
+  unique_labels.sort()
+  # print('Labels')
+  # print(unique_labels)
+  # print('Comparing with')
+  # print(np.arange(len(unique_labels)))
+  assert (unique_labels == np.arange(len(unique_labels))).all(), "Labels are not contiguous!"
+
+validate_labels(combined_df_filtd_train_filtd_filtd)
+# validate_labels(combined_df_filtd_val_filtd_filtd)
+# validate_labels(combined_df_filtd_test_filtd)
+
+num_classes = len(unique_labels)
+print(f'You have {num_classes} classes.')
+with open('num_classes.txt', 'w') as f:
+    f.write(str(num_classes))
 
 # Make files for the training
 combined_df_filtd_train_filtd_filtd.to_csv(f'train-{sys.argv[2][9:13]}.csv', index=False)
@@ -195,4 +241,3 @@ combined_df_filtd_test_filtd.to_csv(f'test-{sys.argv[2][9:13]}.csv', index=False
 with open(f'taxa_labels_mapping.txt', 'a') as f:
   for taxon, label in taxa_to_label.items():
     f.write(f"{label}, {taxon}\n")
-    
