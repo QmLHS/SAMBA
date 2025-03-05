@@ -126,7 +126,7 @@ ncbi_filtd = ncbi[ncbi['seq_len'] < 200]
 bold_filtd = bold_filtd.drop(columns=['seq_len'])
 ncbi_filtd = ncbi_filtd.drop(columns=['seq_len'])
 
-print('Filtered for length < 190.')
+print('Filtered for length < 200.')
 
 del bold, ncbi
 
